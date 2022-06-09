@@ -1,13 +1,13 @@
 import 'dart:convert';
 
+import 'package:florataba_mobile_app/api/credentials.dart';
 import 'package:florataba_mobile_app/api/user/user_model.dart';
 import 'package:http/http.dart' as http;
-
 
 class UserApi {
   Future createUser(Map<String, String> data) {
     return http.post(
-      Uri.parse('http://10.0.2.2:8000/users/'),
+      Uri.parse('http://$API_SERVER_IP:8000/users/'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -22,7 +22,8 @@ class UserApi {
   }
 
   Future<UserModel?> getUser(String id) async {
-    var response = await http.get(Uri.parse('http://10.0.2.2:8000/users/$id'));
+    var response =
+        await http.get(Uri.parse('http://$API_SERVER_IP:8000/users/$id'));
     try {
       final dataCollection = jsonDecode(response.body);
       return UserModel.fromJson(dataCollection);
