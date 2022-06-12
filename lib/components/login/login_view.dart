@@ -1,21 +1,13 @@
 import 'package:florataba_mobile_app/blocs/login_bloc/login_bloc.dart';
-import 'package:florataba_mobile_app/components/login/login_field.dart';
+import 'package:florataba_mobile_app/components/login/components/custom_button.dart';
+import 'package:florataba_mobile_app/components/login/components/custom_field.dart';
+import 'package:florataba_mobile_app/components/login/components/forgot_password.dart';
+import 'package:florataba_mobile_app/components/login/components/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-class LoginView extends StatefulWidget {
+
+class LoginView extends StatelessWidget {
   const LoginView({Key? key}) : super(key: key);
-
-  @override
-  State<LoginView> createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> {
-  @override
-  void initState() {
-    super.initState();
-    LoginBloc _bloc = BlocProvider.of<LoginBloc>(context);
-    _bloc.add(const InitialLoginEvent());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +16,7 @@ class _LoginViewState extends State<LoginView> {
       bloc: _bloc,
       listener: (listenerContext, state) {
         if (state is SuccessLogin) {
-          Navigator.of(context).pushNamed("/home");
+          Navigator.of(context).popAndPushNamed("/home");
         }
         if (state is ErrorLogin) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -34,64 +26,51 @@ class _LoginViewState extends State<LoginView> {
       },
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.black.withOpacity(0.8),
+            backgroundColor: Colors.white,
             automaticallyImplyLeading: false,
-            title: const Text('Flutter Insurances'),
-          ),
-          body: Column(
-            children: [
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Account Login",
-                          style: TextStyle(fontSize: 24),
-                        )),
-                    const LoginField(field: "email"),
-                    const LoginField(field: "password"),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () =>
-                            Navigator.of(context).pushNamed("/registration"),
-                        child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 12),
-                            child: const Text("Create an account?")),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: BlocBuilder<LoginBloc, LoginState>(
-                          bloc: _bloc,
-                          builder: (context, state) => InkWell(
-                                onTap: () => context
-                                    .read<LoginBloc>()
-                                    .add(const LoginUserEvent()),
-                                child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 28, vertical: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: const Text(
-                                      "Login",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
-                                    )),
-                              )),
-                    )
-                  ],
-                ),
+            title: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                'Florataba',
+                style: TextStyle(color: Colors.black),
               ),
-              const Spacer(),
-              const Spacer(),
-            ],
+            ),
+          ),
+          body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      margin: const EdgeInsets.only(top: 32),
+                      child: const TitleText(isLogin: true)),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 16),
+                    child: Column(
+                      children: [
+                        const LoginField(
+                            field: "Email", prefixIcon: Icons.email_outlined),
+                        const LoginField(
+                            field: "Password", prefixIcon: Icons.lock_outline),
+                        const ForgotPassword(),
+                        Align(
+                          alignment: Alignment.center,
+                          child: BlocBuilder<LoginBloc, LoginState>(
+                              bloc: _bloc,
+                              builder: (context, state) => CustomButton(
+                                  title: "Login",
+                                  onTap: () => context
+                                      .read<LoginBloc>()
+                                      .add(const LoginUserEvent()))),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           )),
     );
   }
