@@ -12,7 +12,8 @@ class CatalogView extends StatelessWidget {
         bloc: _loginBloc,
         listener: (context, state) {
           if (state is SuccessLogoutUser) {
-            Navigator.of(context).pushNamed("/");
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil("/login", (route) => false);
           }
         },
         child: Scaffold(
@@ -29,6 +30,16 @@ class CatalogView extends StatelessWidget {
                 ],
               ),
             ),
-            body: Container()));
+            body: BlocBuilder<LoginBloc, LoginState>(
+              bloc: _loginBloc,
+              builder: (context, state) {
+
+                return Container(
+                  child: Text((state is SuccessLogin)
+                      ? state.userEmail as String
+                      : "ERROR"),
+                );
+              },
+            )));
   }
 }
