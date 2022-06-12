@@ -1,1 +1,1 @@
-const String API_SERVER_IP="YOUR IP";
+const String API_SERVER_IP="10.0.2.2";

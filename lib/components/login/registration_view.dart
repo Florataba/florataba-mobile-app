@@ -1,5 +1,7 @@
 import 'package:florataba_mobile_app/blocs/login_bloc/login_bloc.dart';
-import 'package:florataba_mobile_app/components/login/login_field.dart';
+import 'package:florataba_mobile_app/components/login/components/custom_button.dart';
+import 'package:florataba_mobile_app/components/login/components/custom_field.dart';
+import 'package:florataba_mobile_app/components/login/components/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +15,7 @@ class RegistrationView extends StatelessWidget {
       bloc: _bloc,
       listener: (listenerContext, state) {
         if (state is SuccessUserRegistration) {
-          Navigator.of(context).pushNamed("/");
+          Navigator.of(context).popAndPushNamed("/login");
         }
         if (state is ErrorLogin) {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -23,58 +25,48 @@ class RegistrationView extends StatelessWidget {
       },
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.black.withOpacity(0.8),
-            title: const Text('Flutter Insurances'),
+            automaticallyImplyLeading: false,
+            backgroundColor: Colors.white,
+            title: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Florataba',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
           ),
-          resizeToAvoidBottomInset: false,
-          body: Column(
-            children: [
-              const Spacer(),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Column(
+          body: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Account Registration",
-                          style: TextStyle(fontSize: 24),
-                        )),
-                    const LoginField(field: "email"),
-                    const LoginField(field: "password"),
-                    const LoginField(field: "first_name"),
-                    const LoginField(field: "surname"),
-                    const LoginField(field: "phone_number"),
-                    const LoginField(field: "location"),
+                    Container(
+                        margin: const EdgeInsets.only(top: 32),
+                        child: const TitleText(isLogin: false)),
+                    const LoginField(
+                        field: "Email", prefixIcon: Icons.email_outlined),
+                    const LoginField(
+                        field: "Password", prefixIcon: Icons.lock_outline),
+                    const LoginField(
+                        field: "First_name", prefixIcon: Icons.person_outline),
+                    const LoginField(
+                        field: "Surname", prefixIcon: Icons.person_outline),
+                    const LoginField(
+                        field: "Phone_number",
+                        prefixIcon: Icons.phone_outlined),
                     Align(
-                      alignment: Alignment.centerLeft,
-                      child: BlocBuilder<LoginBloc, LoginState>(
-                          bloc: _bloc,
-                          builder: (context, state) => InkWell(
+                        alignment: Alignment.centerLeft,
+                        child: BlocBuilder<LoginBloc, LoginState>(
+                            bloc: _bloc,
+                            builder: (context, state) => CustomButton(
+                                title: "Register",
                                 onTap: () => context
                                     .read<LoginBloc>()
-                                    .add(const CreateUserEvent()),
-                                child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 28, vertical: 12),
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: const Text(
-                                      "Create",
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.white),
-                                    )),
-                              )),
-                    )
-                  ],
-                ),
-              ),
-              const Spacer(),
-              const Spacer(),
-            ],
+                                    .add(const CreateUserEvent())))),
+                  ]),
+            ),
           )),
     );
   }

@@ -6,13 +6,13 @@ abstract class LoginState {
 }
 
 class LoginInitial extends LoginState {
-  final String? userEmail;
-
-  const LoginInitial([this.userEmail]);
+  const LoginInitial();
 }
 
 class SuccessLogin extends LoginState {
-  const SuccessLogin();
+  final String? userEmail;
+
+  const SuccessLogin([this.userEmail]);
 }
 
 class SuccessUserRegistration extends LoginState {
