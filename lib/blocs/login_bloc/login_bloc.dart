@@ -15,7 +15,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final Map<String, String> _input = {
     "email": "",
     "password": "",
-    "location": "",
     "first_name": "",
     "surname": "",
     "phone_number": "",
@@ -24,48 +23,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginInitial()) {
     on<InitialLoginEvent>((event, emit) async {
       String? savedLogin = await _storage.read(key: "email");
-      String? savedPassword = await _storage.read(key: "password");
-      try {
-        if (savedLogin != null && savedPassword != null) {
-          _userData = await _api.getUser(savedLogin);
-          emit(const SuccessLogin());
-        }
-        emit(LoginInitial(savedLogin));
-      } catch (error) {
-        emit(const ErrorLogin());
+
+      if (event.isLogged) {
+        _userData = await _api.getUser(savedLogin!);
+
+        emit(SuccessLogin(_userData?.email));
       }
     });
 
     on<LoginUserEvent>((event, emit) async {
-      String? savedLogin = await _storage.read(key: "email");
-      String? savedPassword = await _storage.read(key: "password");
-
-      if (savedLogin == null || savedPassword == null) {
-        try {
-          _userData = await _api.getUser(_input["email"] as String);
-          _storage.write(key: "email", value: _userData!.email);
-          _storage.write(key: "password", value: _input["password"]);
-          emit(const SuccessLogin());
-          emit(LoginInitial(_userData!.email));
-        } catch (error) {
+      emit(const LoginInitial());
+      try {
+        _userData = await _api.getUser(_input["email"] as String);
+        if (_userData == null) {
           emit(const ErrorLogin());
-        }
-      }
-
-      if (savedPassword == _input["password"]) {
-        try {
-          _userData = await _api.getUser(_input["email"] as String);
+        } else if (_userData?.password == _input["password"]) {
           _storage.write(key: "email", value: _input["email"]);
-          (_userData != null)
-              ? emit(const SuccessLogin())
-              : emit(const ErrorLogin());
-        } catch (error) {
+          _storage.write(key: "password", value: _input["password"]);
+          _storage.write(key: "isLogged", value: "true");
+          emit(SuccessLogin(_userData?.email));
+        } else {
           emit(const ErrorLogin());
         }
-      } else {
+      } catch (error) {
         emit(const ErrorLogin());
       }
-      emit(LoginInitial(_input["email"]));
     });
 
     on<CreateUserEvent>((event, emit) async {
@@ -85,9 +67,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     });
     on<LogoutUserEvent>((event, emit) async {
       try {
-        await _storage.delete(key: "email");
+        await _storage.deleteAll();
         emit(const SuccessLogoutUser());
-        emit(const LoginInitial());
       } catch (error) {
         emit(const ErrorLogin());
       }

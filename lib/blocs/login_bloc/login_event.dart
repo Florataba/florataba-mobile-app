@@ -6,7 +6,8 @@ abstract class LoginEvent {
 }
 
 class InitialLoginEvent extends LoginEvent {
-  const InitialLoginEvent();
+  final bool isLogged;
+  const InitialLoginEvent(this.isLogged);
 }
 
 class LoginUserEvent extends LoginEvent {
