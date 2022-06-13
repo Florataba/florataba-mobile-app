@@ -6,17 +6,19 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<IconData> navigationBarItems = [
+    List<IconData> navigationBarIcon = [
       Icons.home,
       Icons.notifications,
       Icons.shopping_cart,
       Icons.person
     ];
+    List<String> navigationBarTitle = ["home", "news", "cart", "profile"];
 
     return Container(
         height: 50,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius:
+              const BorderRadius.vertical(top: Radius.circular(20)),
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -28,11 +30,11 @@ class BottomNavigation extends StatelessWidget {
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: navigationBarItems
+          children: navigationBarIcon
               .map((icon) => NavigationItem(
-                    icon: icon,
-                    index: navigationBarItems.indexOf(icon),
-                  ))
+                  icon: icon,
+                  index: navigationBarIcon.indexOf(icon),
+                  title: navigationBarTitle[navigationBarIcon.indexOf(icon)]))
               .toList(),
         ));
   }
