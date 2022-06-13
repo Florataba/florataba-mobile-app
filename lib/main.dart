@@ -15,6 +15,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
+import 'components/payment/payment_view.dart';
+import 'components/profile/profile_view.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp(
@@ -76,6 +79,8 @@ class MyHomePage extends StatelessWidget {
           '/registration': (context) => const RegistrationView(),
           '/home': (context) => const CatalogView(),
           '/cart': (context) => const CartView(),
+          '/profile':(context) => const ProfileView(),
+          '/payment': (context) => const PaymentView(),
         });
   }
 }
