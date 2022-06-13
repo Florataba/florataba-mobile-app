@@ -23,9 +23,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginInitial()) {
     on<InitialLoginEvent>((event, emit) async {
       String? savedLogin = await _storage.read(key: "email");
+      String? savedPassword = await _storage.read(key: "password");
 
       if (event.isLogged) {
-        _userData = await _api.getUser(savedLogin!);
+        _userData = await _api.getUser(savedLogin!,savedPassword!);
 
         emit(SuccessLogin(_userData?.email));
       }
@@ -34,10 +35,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginUserEvent>((event, emit) async {
       emit(const LoginInitial());
       try {
-        _userData = await _api.getUser(_input["email"] as String);
+        _userData = await _api.getUser(_input["email"] as String,_input["password"] as String);
+        print(_userData);
         if (_userData == null) {
           emit(const ErrorLogin());
-        } else if (_userData?.password == _input["password"]) {
+        } else if (_userData?.email == _input["email"]) {
           _storage.write(key: "email", value: _input["email"]);
           _storage.write(key: "password", value: _input["password"]);
           _storage.write(key: "isLogged", value: "true");
