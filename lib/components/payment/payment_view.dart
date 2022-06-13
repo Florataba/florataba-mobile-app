@@ -1,19 +1,29 @@
+import 'package:collection/collection.dart';
+import 'package:florataba_mobile_app/blocs/order_bloc/order_bloc.dart';
+import 'package:florataba_mobile_app/redux/app_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class PaymentView extends StatelessWidget {
   const PaymentView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    OrderBloc _orderBloc = BlocProvider.of<OrderBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black.withOpacity(0.8),
-        automaticallyImplyLeading: false,
-        title: const Text('Payment'),
-      ),
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          elevation: 0.0,
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: const [
+            Text('Florataba', style: TextStyle(color: Colors.black)),
+          ])),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             const Align(
               alignment: Alignment.centerLeft,
@@ -24,7 +34,7 @@ class PaymentView extends StatelessWidget {
             const SizedBox(height: 8),
             Container(
               height: 400,
-              width: 360,
+              width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 border: Border.fromBorderSide(BorderSide(
@@ -169,60 +179,101 @@ class PaymentView extends StatelessWidget {
                               color: Colors.black,
                               borderRadius: BorderRadius.circular(16),
                             ),
-                            child: const Text(
-                              " Pay",
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.white),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                Icon(
+                                  Icons.apple,
+                                  color: Colors.white,
+                                ),
+                                Text(
+                                  "Pay",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.white),
+                                ),
+                              ],
                             )),
                       ))
                 ],
               ),
             ),
-            const SizedBox(
-              height: 148,
-            ),
-            const Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                'Total ' + '1200',
-                style: TextStyle(
-                    fontSize: 14, fontFamily: 'Inter', color: Colors.black),
-              ),
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            const Align(
-              alignment: Alignment.centerRight,
-              child: Text(
-                '6 ' + 'items',
-                style: TextStyle(
-                    fontSize: 14, fontFamily: 'Inter', color: Colors.grey),
-              ),
-            ),
-            const SizedBox(height: 8),
-            SizedBox(
-              height: 48,
-              width: 340,
-              child: InkWell(
-                onTap: () => {},
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: const Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Complete Order",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+            StoreConnector<CartState, List>(
+              converter: (store) {
+                var totalSum = store.state.cartList
+                        .map((data) => data.price)
+                        .toList()
+                        .sum *
+                    0.95;
+                var totalItemCount = store.state.cartList.length;
+
+                return [totalSum, totalItemCount];
+              },
+              builder: (context, state) => Container(
+                margin: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Total €${state[0].toStringAsFixed(2)}',
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          '${state[1]} items',
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Inter',
+                              color: Colors.grey),
+                        ),
+                      ],
                     ),
-                  ),
+                    SizedBox(
+                      height: 65,
+                      width: MediaQuery.of(context).size.width,
+                      child: InkWell(
+                        onTap: () {
+                          print("dfs");
+                          _orderBloc.add(AddOrder({
+                            'street': "Shafaryka",
+                            'region': "Lviv",
+                            'build_number': "199",
+                            'apartment_number': "161",
+                            'total_price': state[0].toStringAsFixed(2),
+                            'order_info': "This order contain ${state[1]} item",
+                            'status': "Collecting"
+                          }));
+                          Navigator.of(context).pushNamed("/order-list");
+                        },
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Complete order",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )),
+                      ),
+                    )
+                  ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
