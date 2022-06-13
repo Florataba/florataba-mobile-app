@@ -1,3 +1,4 @@
+import 'package:florataba_mobile_app/components/bottom_sheet_delivery/deliveryBottomSheet.dart';
 import 'package:flutter/material.dart';
 
 class CartButton extends StatelessWidget {
@@ -6,7 +7,7 @@ class CartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      // onTap: () => onTap(),
+      onTap: () => deliveryBottomSheet(context),
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
           width: MediaQuery.of(context).size.width,
@@ -33,4 +34,7 @@ class CartButton extends StatelessWidget {
           )),
     );
   }
+
+
 }
+
