@@ -27,7 +27,7 @@ class ProfileButtonWithBox extends StatelessWidget {
                 blurRadius: 5,
               ),
             ],
-            color: const Color.fromRGBO(12, 33, 193, 1),
+            color:  Colors.black,
             borderRadius: BorderRadius.circular(28),
           ),
           child: Align(

@@ -73,13 +73,13 @@ class MyHomePage extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute: isLogged ? "/home" : "/login",
+        initialRoute:  "/home",
         routes: {
           '/login': (context) => const LoginView(),
           '/registration': (context) => const RegistrationView(),
           '/home': (context) => const CatalogView(),
           '/cart': (context) => const CartView(),
-          '/profile':(context) => const ProfileView(),
+          '/profile':(context) => ProfileView(),
           '/payment': (context) => const PaymentView(),
         });
   }
