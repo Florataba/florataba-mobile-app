@@ -17,7 +17,7 @@ class UserApi {
         'first_name': data["first_name"] as String,
         'surname': data["surname"] as String,
         'phone_number': data["phone_number"] as String,
-        '_User__password': data["password"] as String,
+        'password': data["password"] as String,
       }),
     );
   }
