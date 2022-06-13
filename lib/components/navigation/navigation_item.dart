@@ -5,8 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class NavigationItem extends StatelessWidget {
   final IconData icon;
   final int index;
+  final String title;
 
-  const NavigationItem({Key? key, required this.icon, required this.index})
+  const NavigationItem(
+      {Key? key, required this.icon, required this.index, required this.title})
       : super(key: key);
 
   @override
@@ -19,7 +21,14 @@ class NavigationItem extends StatelessWidget {
             : Colors.grey;
         Icon defaultIcon = Icon(icon, color: currentColor, size: 30);
         return InkWell(
-            onTap: () => _bloc.add(UpdateNavigation(index)),
+            onTap: () {
+              if (state is CurrentNavigator) {
+                if (state.currentIndex != index) {
+                  _bloc.add(UpdateNavigation(index));
+                  Navigator.of(context).pushNamed("/$title");
+                }
+              }
+            },
             child: (state is CurrentNavigator)
                 ? ((state.currentIndex == index)
                     ? Column(
