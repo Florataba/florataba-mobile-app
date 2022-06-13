@@ -22,7 +22,7 @@ class BouquetModel {
       title: json['title'],
       eventType: json['event_type_bouquet'],
       description: json['description'],
-      price: json['price'],
+      price: double.parse(json['price']),
       isSingleBouquet: json['is_single_bouquet'],
       availableQuantity: json['available_quantity'],
       imgUrl: json['img_url'],
