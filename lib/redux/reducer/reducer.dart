@@ -8,10 +8,7 @@ CartState reducer(CartState prevState, dynamic action) {
     newState.cartList.add(action.item);
   }
   if (action is RemoveFromCart) {
-    print(newState.cartList.length);
     newState.cartList.remove(action.item);
-        // .firstWhere((element) => element.title == action.item.title);
-    print(newState.cartList.length);
   }
 
   return newState;
