@@ -3,7 +3,7 @@ import 'package:florataba_mobile_app/blocs/profile_bloc/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super();
+  ProfileBloc() : super(ProfileState(userMail: '', avatarPath: '', userDescription: ''));
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is ChangeAvatarRequest) {
