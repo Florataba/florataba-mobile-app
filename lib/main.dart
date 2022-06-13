@@ -3,6 +3,7 @@ import 'package:florataba_mobile_app/blocs/catalog_bloc/catalog_bloc.dart';
 import 'package:florataba_mobile_app/blocs/login_bloc/login_bloc.dart';
 import 'package:florataba_mobile_app/blocs/navigator_bloc/navigator_bloc.dart';
 import 'package:florataba_mobile_app/blocs/on_off_bloc/on_off_bloc.dart';
+import 'package:florataba_mobile_app/blocs/order_bloc/order_bloc.dart';
 import 'package:florataba_mobile_app/blocs/selector_bloc/selector_bloc.dart';
 import 'package:florataba_mobile_app/components/cart/cart_view.dart';
 import 'package:florataba_mobile_app/components/catalog/catalog_view.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
             }),
             BlocProvider(create: (BuildContext context) => OnOffBloc()),
             BlocProvider(create: (BuildContext context) => SelectorBloc()),
+            BlocProvider(create: (BuildContext context) => OrderBloc()),
             BlocProvider(create: (BuildContext context) {
               NavigatorBloc _bloc = NavigatorBloc();
               _bloc.add(const UpdateNavigation(0));
@@ -79,7 +81,7 @@ class MyHomePage extends StatelessWidget {
           '/registration': (context) => const RegistrationView(),
           '/home': (context) => const CatalogView(),
           '/cart': (context) => const CartView(),
-          '/profile':(context) => ProfileView(),
+          '/profile': (context) => const ProfileView(),
           '/payment': (context) => const PaymentView(),
         });
   }

@@ -9,7 +9,8 @@ class CatalogApi {
   Future<List<BouquetModel>> getCatalogList() async {
     try {
       var response =
-          await http.get(Uri.parse('http://$API_SERVER_IP:8000/bouquetes/'));
+          await http.get(Uri.parse('http://$API_SERVER_IP:8000/api/bouquet/'));
+
       final dataCollection = json.decode(utf8.decode(response.bodyBytes));
 
       return (dataCollection as List)
