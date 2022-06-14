@@ -1,42 +1,20 @@
+import 'package:florataba_mobile_app/blocs/order_bloc/order_bloc.dart';
+import 'package:florataba_mobile_app/components/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'order_item.dart';
 
 class OrdersPage extends StatelessWidget {
-  OrdersPage({Key? key}) : super(key: key);
-
-  final List _trackingId = [
-    'Tracking ID: 263512074109',
-    'Tracking ID: 263512074432',
-    'Tracking ID: 263512045678',
-    'Tracking ID: 263512876543',
-  ];
-
-  final List _sizes = [
-    'Size: Medium 22”H x 13”W',
-    'Size: Medium 22”H x 13”W',
-    'Size: Medium 22”H x 13”W',
-    'Size: Medium 22”H x 13”W',
-  ];
-
-  final List _titlesOrder = [
-    'French Marigold',
-    'Ukraine Marigold',
-    'Poland Marigold',
-    'German Marigold',
-  ];
-
-  final List _prices = [
-    '₹494.00',
-    '₹700.00',
-    '₹228.00',
-    '₹69.00',
-  ];
+  const OrdersPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    OrderBloc _orderBloc = BlocProvider.of<OrderBloc>(context);
     return Scaffold(
+      bottomNavigationBar: const BottomNavigation(),
       appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
@@ -47,28 +25,20 @@ class OrdersPage extends StatelessWidget {
           ])),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: Container(
-                child: ListView.builder(
-                    itemCount: _trackingId.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          const SizedBox(height: 8),
-                          MyOrderItem(_trackingId[index], _titlesOrder[index],
-                              _sizes[index], _prices[index]),
-                          const SizedBox(height: 8),
-                        ],
-                      );
-                    }),
-              ),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: BlocBuilder<OrderBloc, OrderState>(
+            bloc: _orderBloc,
+            builder: (context, state) {
+              return (state is LoadedOrders)
+                  ? Column(
+                      children: state.list
+                          .map((value) => MyOrderItem(data: value))
+                          .toList())
+                  : const SizedBox();
+            },
+          ),
         ),
       ),
     );
   }
 }
-
