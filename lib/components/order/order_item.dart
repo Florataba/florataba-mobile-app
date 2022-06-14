@@ -1,24 +1,23 @@
+import 'package:florataba_mobile_app/api/orders/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MyOrderItem extends StatelessWidget {
-  final String title;
-  final String news;
-  final String time;
-  final String price;
+  final OrderModel data;
 
-  const MyOrderItem(this.title, this.news, this.time, this.price) : super();
+  const MyOrderItem({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(5)),
         border: Border.fromBorderSide(BorderSide(
           color: Color.fromRGBO(200, 200, 200, 1),
         )),
       ),
-      width: 370,
+      width: MediaQuery.of(context).size.width,
       height: 136,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 20),
@@ -28,7 +27,7 @@ class MyOrderItem extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                title,
+                'Tracking ID: ${data.orderDetails}',
                 style: const TextStyle(
                     fontSize: 17,
                     fontFamily: 'Poppins',
@@ -53,7 +52,7 @@ class MyOrderItem extends StatelessWidget {
                       width: 190,
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        news,
+                        data.orderInfo,
                         style: const TextStyle(
                             fontSize: 16,
                             fontFamily: 'Inter',
@@ -67,7 +66,7 @@ class MyOrderItem extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        time,
+                        data.status,
                         style: const TextStyle(
                             fontSize: 14,
                             fontFamily: 'Inter',
@@ -82,23 +81,8 @@ class MyOrderItem extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Text(
-                        price,
+                        "€${data.totalPrice}",
                         style: const TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            color: Color.fromRGBO(188, 188, 188, 1),
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 48,
-                    left: 80,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'In stock',
-                        style: TextStyle(
                             fontSize: 14,
                             fontFamily: 'Inter',
                             color: Color.fromRGBO(188, 188, 188, 1),
