@@ -17,7 +17,6 @@ class ProfileButtonWithBox extends StatelessWidget {
       onTap: () => onTap(),
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 15),
-          // width of button
           width: MediaQuery.of(context).size.width / 1.15,
           decoration: BoxDecoration(
             boxShadow: [
@@ -27,7 +26,7 @@ class ProfileButtonWithBox extends StatelessWidget {
                 blurRadius: 5,
               ),
             ],
-            color:  Colors.black,
+            color: Colors.black,
             borderRadius: BorderRadius.circular(28),
           ),
           child: Align(
