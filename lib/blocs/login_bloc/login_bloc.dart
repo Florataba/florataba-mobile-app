@@ -28,7 +28,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (event.isLogged) {
         _userData = await _api.getUser(savedLogin!,savedPassword!);
 
-        emit(SuccessLogin(_userData?.email));
+        emit(SuccessLogin(_userData));
       }
     });
 
@@ -43,7 +43,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           _storage.write(key: "email", value: _input["email"]);
           _storage.write(key: "password", value: _input["password"]);
           _storage.write(key: "isLogged", value: "true");
-          emit(SuccessLogin(_userData?.email));
+          emit(SuccessLogin(_userData));
         } else {
           emit(const ErrorLogin());
         }

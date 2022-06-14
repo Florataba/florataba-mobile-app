@@ -10,9 +10,9 @@ class LoginInitial extends LoginState {
 }
 
 class SuccessLogin extends LoginState {
-  final String? userEmail;
+  final UserModel? user;
 
-  const SuccessLogin([this.userEmail]);
+  const SuccessLogin([this.user]);
 }
 
 class SuccessUserRegistration extends LoginState {
