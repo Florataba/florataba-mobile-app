@@ -246,9 +246,10 @@ class PaymentView extends StatelessWidget {
                             'build_number': "199",
                             'apartment_number': "161",
                             'total_price': state[0].toStringAsFixed(2),
-                            'order_info': "This order contain ${state[1]} item",
+                            'order_info': "Exclusive ${state[1]} item",
                             'status': "Collecting"
                           }));
+                          _orderBloc.add(LoadOrders());
                           Navigator.of(context).pushNamed("/order-list");
                         },
                         child: Container(

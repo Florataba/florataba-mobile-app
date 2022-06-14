@@ -1,9 +1,15 @@
+import 'package:florataba_mobile_app/components/navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatelessWidget {
   NotificationPage({Key? key}) : super(key: key);
 
-  final List _titles = ['Defiant Kyiv residents arrange tulips display', 'China welcomes cherry blossom season with dazzling firework display', '5,000 blooms on display at Kew Gardens orchid festival', 'Canal boat gives away free flowers to mark start of tulip season'];
+  final List _titles = [
+    'Defiant Kyiv residents arrange tulips display',
+    'China welcomes cherry blossom season with dazzling firework display',
+    '5,000 blooms on display at Kew Gardens orchid festival',
+    'Canal boat gives away free flowers to mark start of tulip season'
+  ];
 
   final List _times = [
     '12:34 12 Oct 2022',
@@ -22,16 +28,15 @@ class NotificationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: const BottomNavigation(),
       appBar: AppBar(
           backgroundColor: Colors.white,
           automaticallyImplyLeading: false,
           elevation: 0.0,
-          title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
-                Text('Florataba',
-                    style: TextStyle(color: Colors.black)),
-              ])),
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: const [
+            Text('Florataba', style: TextStyle(color: Colors.black)),
+          ])),
       body: Column(
         children: [
           const Align(
@@ -44,21 +49,19 @@ class NotificationPage extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
           ),
-
           Expanded(
-            child: Container(
-              child: ListView.builder(
-                  itemCount: _titles.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        const SizedBox(height: 8),
-                        MyNotification(_titles[index], _news[index], _times[index]),
-                        const SizedBox(height: 8),
-                      ],
-                    );
-                  }),
-            ),
+            child: ListView.builder(
+                itemCount: _titles.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      const SizedBox(height: 8),
+                      MyNotification(
+                          _titles[index], _news[index], _times[index]),
+                      const SizedBox(height: 8),
+                    ],
+                  );
+                }),
           ),
         ],
       ),

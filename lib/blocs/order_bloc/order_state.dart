@@ -8,3 +8,9 @@ abstract class OrderState {
 class OrderInitial extends OrderState {
   const OrderInitial();
 }
+
+class LoadedOrders extends OrderState {
+  final List<OrderModel> list;
+
+  const LoadedOrders(this.list);
+}
