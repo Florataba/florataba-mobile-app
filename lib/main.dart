@@ -9,6 +9,8 @@ import 'package:florataba_mobile_app/components/cart/cart_view.dart';
 import 'package:florataba_mobile_app/components/catalog/catalog_view.dart';
 import 'package:florataba_mobile_app/components/login/login_view.dart';
 import 'package:florataba_mobile_app/components/login/registration_view.dart';
+import 'package:florataba_mobile_app/components/notification/notification_view.dart';
+import 'package:florataba_mobile_app/components/order/order_view.dart';
 import 'package:florataba_mobile_app/redux/app_state.dart';
 import 'package:florataba_mobile_app/redux/reducer/reducer.dart';
 import 'package:flutter/material.dart';
@@ -75,7 +77,7 @@ class MyHomePage extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
         ),
         debugShowCheckedModeBanner: false,
-        initialRoute:  "/home",
+        initialRoute: isLogged ? "/home" : "/login",
         routes: {
           '/login': (context) => const LoginView(),
           '/registration': (context) => const RegistrationView(),
@@ -83,6 +85,8 @@ class MyHomePage extends StatelessWidget {
           '/cart': (context) => const CartView(),
           '/profile': (context) => const ProfileView(),
           '/payment': (context) => const PaymentView(),
+          '/order-list': (context) => const OrdersPage(),
+          '/news': (context) => NotificationPage(),
         });
   }
 }
