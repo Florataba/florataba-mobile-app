@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:collection/collection.dart';
 import 'package:florataba_mobile_app/api/credentials.dart';
 import 'package:florataba_mobile_app/api/orders/order_model.dart';
 import 'package:http/http.dart' as http;
@@ -48,11 +49,40 @@ class OrderApi {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
-        'status': data["total_price"] as String,
+        'status': data["status"] as String,
         'order_details_id': orderDetails,
       }),
     );
     print(order.body);
-    return OrderModel.fromJson(jsonDecode(order.body));
+    return order.statusCode;
+  }
+
+  Future<List<OrderModel>> getOrderList() async {
+    try {
+      List<Map<String, dynamic>> dataList = [];
+      var response =
+          await http.get(Uri.parse('http://$API_SERVER_IP:8000/api/order/'));
+      var responseDetails = await http
+          .get(Uri.parse('http://$API_SERVER_IP:8000/api/order-details/'));
+      final dataCollection = json.decode(utf8.decode(response.bodyBytes));
+      final dataDetailsCollection =
+          json.decode(utf8.decode(responseDetails.bodyBytes));
+      (dataCollection as List).forEach((element) {
+        var result = CombinedMapView([
+          element as Map<String, dynamic>,
+          (dataDetailsCollection as List).firstWhere((elementDetails) =>
+                  elementDetails["id"] == element['order_details'])
+              as Map<String, dynamic>
+        ]);
+
+        dataList.add(result);
+      });
+print(dataList.length);
+List<OrderModel> r=dataList.map((json) => OrderModel.fromJson(json)).toList();
+      print(r.length);
+      return r;
+    } catch (error) {
+      return [];
+    }
   }
 }
