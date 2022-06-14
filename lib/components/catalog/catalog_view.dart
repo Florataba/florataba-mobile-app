@@ -51,14 +51,9 @@ class CatalogView extends StatelessWidget {
                         elevation: 0.0,
                         title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text('Florataba',
+                            children: const [
+                              Text('Florataba',
                                   style: TextStyle(color: Colors.black)),
-                              InkWell(
-                                  onTap: () =>
-                                      _loginBloc.add(const LogoutUserEvent()),
-                                  child: const Icon(Icons.logout,
-                                      color: Colors.blue))
                             ])),
                     body: SizedBox(
                       height: MediaQuery.of(context).size.height,
